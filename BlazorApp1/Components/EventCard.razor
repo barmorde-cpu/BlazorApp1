@@ -1,0 +1,28 @@
+@using EventEase.Models
+
+<div class="card mb-3 shadow-sm" style="width: 18rem;">
+    <div class="card-body">
+        @if (EventData != null)
+        {
+            <h5 class="card-title">@EventData.Name</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@EventData.Date.ToShortDateString()</h6>
+            <p class="card-text">
+                <strong>Location:</strong> @EventData.Location <br />
+                <strong>Attendees:</strong> @EventData.Attendees
+            </p>
+            
+            <!-- Routing Link (Part 1) -->
+            <a href="/event/@EventData.Id" class="btn btn-primary">View Details</a>
+        }
+        else
+        {
+            <!-- Input Validation / Error Handling (Part 2) -->
+            <div class="alert alert-danger">Invalid Event Data</div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventItem? EventData { get; set; }
+}

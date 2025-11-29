@@ -1,0 +1,61 @@
+@page "/event/{Id:int}"
+@using EventEase.Services
+@using EventEase.Models
+@inject EventService EventService
+@inject NavigationManager NavManager
+
+@if (evt == null)
+{
+    <p><em>Loading or Event Not Found...</em></p>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            Event Details
+        </div>
+        <div class="card-body">
+            <h2 class="card-title">@evt.Name</h2>
+            <p><strong>Date:</strong> @evt.Date</p>
+            <p><strong>Location:</strong> @evt.Location</p>
+            <p>@evt.Description</p>
+            <hr />
+            <h4>Attendance Tracker</h4>
+            <p>Current Attendees: <strong>@evt.Attendees</strong></p>
+            
+            <button class="btn btn-success" @onclick="RegisterAttendance">Join Event</button>
+            <button class="btn btn-secondary" @onclick="GoBack">Back to List</button>
+            <a href="/register" class="btn btn-warning">Register Account</a>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private EventItem? evt;
+
+    protected override void OnInitialized()
+    {
+        // Part 2: Routing Logic to handle invalid IDs gracefully
+        evt = EventService.GetEventById(Id);
+        
+        if (evt == null)
+        {
+            // Redirect to a custom Not Found or Home
+            // For now, we let the UI show "Event Not Found"
+        }
+    }
+
+    private void RegisterAttendance()
+    {
+        // Part 3: Attendance Tracker Logic
+        EventService.RegisterAttendee(Id);
+    }
+
+    private void GoBack()
+    {
+        NavManager.NavigateTo("/");
+    }
+}

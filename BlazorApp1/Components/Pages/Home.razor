@@ -1,0 +1,28 @@
+@page "/"
+@using EventEase.Models
+@using EventEase.Services
+@using EventEase.Components
+@inject EventService EventService
+
+<PageTitle>EventEase - Home</PageTitle>
+
+<h1>Upcoming Events</h1>
+
+<div class="row">
+    <!-- Performance Optimization: Virtualize (Part 2) -->
+    <!-- Renders only visible items to handle large datasets efficiently -->
+    <Virtualize Items="@events" Context="evt">
+        <div class="col-md-4">
+            <EventCard EventData="@evt" />
+        </div>
+    </Virtualize>
+</div>
+
+@code {
+    private List<EventItem> events = new();
+
+    protected override void OnInitialized()
+    {
+        events = EventService.GetEvents();
+    }
+}

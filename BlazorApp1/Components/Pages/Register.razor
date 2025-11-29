@@ -1,0 +1,47 @@
+@page "/register"
+@using EventEase.Models
+@using EventEase.Services
+@inject UserSessionService SessionService
+@inject NavigationManager NavManager
+
+<h3>User Registration</h3>
+
+@if (SessionService.IsLoggedIn)
+{
+    <div class="alert alert-success">
+        You are logged in as <strong>@SessionService.CurrentUser</strong>.
+    </div>
+}
+else
+{
+    <!-- Form Validation (Part 3) -->
+    <EditForm Model="@regModel" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label>Name:</label>
+            <InputText @bind-Value="regModel.UserName" class="form-control" />
+            <ValidationMessage For="@(() => regModel.UserName)" />
+        </div>
+
+        <div class="mb-3">
+            <label>Email:</label>
+            <InputText @bind-Value="regModel.Email" class="form-control" />
+            <ValidationMessage For="@(() => regModel.Email)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register & Login</button>
+    </EditForm>
+}
+
+@code {
+    private RegistrationModel regModel = new();
+
+    private void HandleValidSubmit()
+    {
+        // Part 3: State Management
+        SessionService.Login(regModel.UserName);
+        NavManager.NavigateTo("/");
+    }
+}
