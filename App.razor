@@ -1,0 +1,17 @@
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <!-- Part 2: Graceful error handling for invalid paths -->
+        <PageTitle>Not Found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="alert alert-danger">
+                <h1>404 - Page Not Found</h1>
+                <p>Sorry, there's nothing at this address.</p>
+                <a href="/" class="btn btn-primary">Return Home</a>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>
